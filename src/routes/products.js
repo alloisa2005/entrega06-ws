@@ -2,8 +2,8 @@
 const express = require('express');
 const crypto = require('crypto');
 const router = express.Router();
-
-let products = [];
+const Contenedor = require('../classes/contenedor');
+let contenedor = new Contenedor('productos.txt');
 
 // Middleware para validar si existe el ID del producto
 const validarProductId = (req,res,next) => {
@@ -42,14 +42,15 @@ router.get('/:id', validarProductId, (req, res) => {
   }  
 });
 
-router.post('/', validarInputsProduct, (req, res) => {
+router.post('/', validarInputsProduct, async (req, res) => {
 
   try {
     let producto = req.body;    
     producto.id = crypto.randomUUID();  
 
-    products.push(producto);  
+    //products.push(producto);  
     //res.status(200).send({status: 'OK', result: producto});  
+    await contenedor.save(producto);
     res.redirect('/');
   } catch (error) {
     res.status(404).send({status: 'ERROR', result: error.message})

@@ -6,6 +6,9 @@ const productRouter = require('./routes/products');
 const { Server } = require('socket.io');
 const PORT = process.env.PORT || 3000;
 
+const Contenedor = require("./classes/contenedor");
+let contenedor = new Contenedor('productos.txt');
+
 
 const server = app.listen(PORT, () => console.log(`Server Up on Port ${PORT}`));
 
@@ -18,7 +21,11 @@ app.use(express.static(__dirname + '/public'));
 app.use(express.json());
 app.use(express.urlencoded({extended:true}));
 
-let products = []
+let products = [];
+contenedor.getAll()
+  .then(res => {
+    products = res.data;    
+  }); 
 
 app.get('/', (req, res) => {  
   res.render('home', {products});
@@ -30,8 +37,19 @@ app.use('/api/productos', productRouter)
 io.on('connection', socket => {  
 
   socket.on('registered', data => {
-    socket.broadcast.emit('newUser', data)
-    socket.emit('prodHistory', products)
+    socket.broadcast.emit('newUser', data)    
+    
+    io.emit('prodHistory', products)
+  })
+
+  socket.on('newProduct', data => {
+    contenedor.save(data)
+      .then(res => {
+        if(res.status === 'success'){
+          products.push(data);
+          io.emit('prodHistory', products)
+        }
+      })
   })
 });
 

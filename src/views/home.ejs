@@ -5,38 +5,26 @@
 
   <h2>Entrega Nro. 06 - WebSockets</h2>  
 
-  <form action="/api/productos" method="post" class="formulario">
-    <input class="inputs" name="title" type="text" placeholder="Nombre Producto">    
-    <input class="inputs" name="price" type="text" placeholder="Precio">
-    <input class="inputs" name="thumbnail" type="text" placeholder="Url Imagen">
-    <button class="btn">Guardar</button>
+  <!-- action="/api/productos" method="post" -->
+  <form class="formulario">
+    <input id="title" class="inputs" name="title" type="text" placeholder="Nombre Producto">    
+    <input id="price" class="inputs" name="price" type="text" placeholder="Precio">
+    <input id="thumbnail" class="inputs" name="thumbnail" type="text" placeholder="Url Imagen">
+    <button id="btn_guardar" class="btn">Guardar</button>
   </form>    
   
 </div>
 
 <div class="container">
 
-  <h2>Productos Cargados (<%=products.length %>)</h2>  
+  <h2>Productos Cargados</h2>  
 
-   <% if (products.length > 0) { %>
-    <table>
-      <tr>
-        <th>Nombre</th>
-        <th>Precio</th>
-        <th>Foto</th>
-      </tr>    
-      <% products.forEach(element => { %>
-        <tr>
-          <td class="tabla_item"><%= element.title %> </td>
-          <td class="tabla_item">$ <%= element.price %> </td>
-          <td><img src=<%= element.thumbnail %>  alt=<%= element.title %>></td>
-        </tr>
-      <% }) %>
-    </table>
-   <% } else { %>
-    <h3 class="no_prod_title">No hay productos cargados</h3>
-   <% } %> 
+   <table id="productosTabla">
+    
+   </table>
   
 </div>
 
 <%- include('./partials/footer') %> 
+
+
