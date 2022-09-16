@@ -2,6 +2,8 @@
 const express = require('express');
 const app = express();
 
+const productRouter = require('./routes/products');
+
 const { Server } = require('socket.io');
 const PORT = process.env.PORT || 3000;
 
@@ -14,6 +16,10 @@ app.use(express.static(__dirname + '/public'));
 app.use(express.json());
 app.use(express.urlencoded({extended:true}));
 
+let products = []
+
 app.get('/', (req, res) => {  
-  res.render('home');
-})
+  res.render('home', {products});
+});
+
+app.use('/api/productos', productRouter)
