@@ -1,4 +1,7 @@
 
+const socket = io();
+let user;
+
 Swal.fire({
   title: 'Login',
   text: 'Ingrese su email',
@@ -10,4 +13,23 @@ Swal.fire({
       return 'Necesitas un correo para ingresar'
     }
   }
+}).then(res => {
+  user = res.value;
+  socket.emit('registered', user)
+});
+
+
+//sockets
+socket.on('newUser', (data) => {
+  // alert('New user connected!')
+  Swal.fire({
+      icon: "success",
+      text: `${data} has connected`,
+      toast: true,
+      position: "top-right"
+  })
 })
+
+socket.on('prodHistory', data => {
+  console.log(data);
+});

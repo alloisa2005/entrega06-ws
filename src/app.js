@@ -3,11 +3,13 @@ const express = require('express');
 const app = express();
 
 const productRouter = require('./routes/products');
-
 const { Server } = require('socket.io');
 const PORT = process.env.PORT || 3000;
 
+
 const server = app.listen(PORT, () => console.log(`Server Up on Port ${PORT}`));
+
+const io = new Server(server);
 
 app.set('views', './src/views');
 app.set('view engine', 'ejs');
@@ -23,3 +25,13 @@ app.get('/', (req, res) => {
 });
 
 app.use('/api/productos', productRouter)
+
+
+io.on('connection', socket => {  
+
+  socket.on('registered', data => {
+    socket.broadcast.emit('newUser', data)
+    socket.emit('prodHistory', products)
+  })
+});
+
