@@ -1,0 +1,26 @@
+[
+  {
+    "user": "tony@gmail.com",
+    "date": "2022-09-17T16:11:12.296Z",
+    "mensaje": "hay alguien?",
+    "id": 1
+  },
+  {
+    "user": "pepe@gmail.com",
+    "date": "2022-09-17T16:11:32.296Z",
+    "mensaje": "como andas?",
+    "id": 2
+  },
+  {
+    "user": "pepe@gmail.com",
+    "date": "2022-09-17T16:11:41.278Z",
+    "mensaje": "poca gente",
+    "id": 3
+  },
+  {
+    "user": "tony@gmail.com",
+    "date": "2022-09-17T16:11:49.000Z",
+    "mensaje": "no anda nadie, un embole",
+    "id": 4
+  }
+]

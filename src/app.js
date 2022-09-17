@@ -8,7 +8,7 @@ const PORT = process.env.PORT || 3000;
 
 const Contenedor = require("./classes/contenedor");
 let contenedor = new Contenedor('productos.txt');
-
+let cont_mensajes = new Contenedor('mensajes.txt');
 
 const server = app.listen(PORT, () => console.log(`Server Up on Port ${PORT}`));
 
@@ -22,10 +22,10 @@ app.use(express.json());
 app.use(express.urlencoded({extended:true}));
 
 let products = [];
-contenedor.getAll()
-  .then(res => {
-    products = res.data;    
-  }); 
+contenedor.getAll().then(res => {products = res.data;}); 
+
+let mensajes = [];
+cont_mensajes.getAll().then(res => {mensajes = res.data;});
 
 app.get('/', (req, res) => {  
   res.render('home', {products});
@@ -36,14 +36,17 @@ app.use('/api/productos', productRouter)
 
 io.on('connection', socket => {  
 
+  // cuando se conecta un nuevo usuario
   socket.on('registered', data => {
     socket.broadcast.emit('newUser', data)    
     
+    //console.log(mensajes);
     io.emit('prodHistory', products)
+    socket.emit('chatHistory', mensajes)
   })
 
-  socket.on('newProduct', data => {
-    console.log(data);
+  // cuando guardan un nuevo producto
+  socket.on('newProduct', data => {    
     contenedor.save(data)
       .then(res => {
         if(res.status === 'success'){
@@ -51,6 +54,17 @@ io.on('connection', socket => {
           io.emit('prodHistory', products)
         }
       })
+  })
+
+  //Cuando envian un msj en el chat
+  socket.on('message', data => {    
+    cont_mensajes.save(data)
+      .then(res => {
+        if(res.status === 'success'){
+          mensajes.push(data);
+          io.emit('chatHistory', mensajes)
+        }
+      })    
   })
 });
 

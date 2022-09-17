@@ -8,6 +8,9 @@ let price = document.getElementById('price');
 let thumbnail = document.getElementById('thumbnail');
 let btn_guardar = document.getElementById('btn_guardar');
 
+let input_msj = document.getElementById('input_msj');
+let chat_container = document.getElementById('chat_container');
+
 // Cuando un usuario se conecta
 Swal.fire({
   title: 'Login',
@@ -47,6 +50,14 @@ btn_guardar.addEventListener('click', (e) => {
   
 });
 
+// Cuando se envia un msj en el chat (Tecla ENTER)
+input_msj.addEventListener('keyup', (e) => {
+  if(e.key === 'Enter'){    
+    socket.emit('message', {user, date: new Date(), mensaje: input_msj.value});        
+    input_msj.value = '';         
+  }
+});
+
 //sockets
 socket.on('newUser', (data) => {
   // alert('New user connected!')
@@ -84,9 +95,21 @@ socket.on('prodHistory', data => {
     cell2.innerHTML = `$${prod.price}`;
     cell3.innerHTML = prod.uploaded;
     cell4.innerHTML = `<img style="object-fit: cover;width:200px;" src="${prod.thumbnail}" alt="${prod.title}">`;
-  });
+  });  
+});
 
-  console.log(data); 
+socket.on('chatHistory', data => {      
+  chat_container.innerHTML ='';
+
+  data.forEach((item) => {    
+    let burbu = document.createElement('div');
+    user === item.user
+      ? burbu.innerHTML = `<div style="with:100%; display:flex; justify-content: end; gap:10px;"> <p class="txt_blue">${item.user}</p> <p class="txt_brown">[${formatoFecha(item.date)}]</p> <p class="txt_green">${item.mensaje}</p> </div>`  
+      : burbu.innerHTML = `<div style="with:100%; display:flex; justify-content: start; gap:10px;"> <p class="txt_blue">${item.user}</p> <p class="txt_brown">[${formatoFecha(item.date)}]</p> <p class="txt_green">${item.mensaje}</p> </div>`;    
+
+      chat_container.innerHTML += burbu.innerHTML; 
+  })
+
 });
 
 // Funcion mensaje de error
@@ -95,4 +118,28 @@ function mensaje(){
     icon: "error",
     text: `Ingrese todos los campos`,    
   });
+}
+
+function formatoFecha(fch){    
+
+  let date = new Date(fch);
+  
+  let dia = date.getDate();
+  if(dia < 10) dia='0'+dia;
+
+  let mes = date.getMonth() + 1;
+  if(mes < 10) mes='0'+mes;
+
+  let anio= date.getFullYear();
+
+  let hora = date.getHours();
+  if(hora < 10) hora='0'+hora;
+
+  let minutes= date.getMinutes();
+  if(minutes < 10) minutes='0'+minutes;
+
+  let seconds = date.getSeconds();
+  if(seconds < 10) seconds='0'+seconds;
+
+  return `${dia}/${mes}/${anio} ${hora}:${minutes}:${seconds}`;
 }

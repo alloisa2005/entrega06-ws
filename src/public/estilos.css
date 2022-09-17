@@ -84,3 +84,34 @@ img {
   font-size: 23px;
   margin: 15px 0;  
 }
+
+.chat {
+  width: 90%; 
+  margin: 30px auto;  
+}
+
+.chat_container {
+  border: 1px solid black;
+  margin-bottom: 15px;
+  padding: 8px;
+}
+
+.input_msj {
+  width: 60%;
+  padding:8px 10px;
+  font-size: 1rem;
+}
+
+.txt_green {
+  color: green;
+  font-style: italic;
+}
+
+.txt_brown {
+  color: brown;
+}
+
+.txt_blue {
+  color: blue;
+  font-weight: bold;
+}
