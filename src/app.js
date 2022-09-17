@@ -43,6 +43,7 @@ io.on('connection', socket => {
   })
 
   socket.on('newProduct', data => {
+    console.log(data);
     contenedor.save(data)
       .then(res => {
         if(res.status === 'success'){

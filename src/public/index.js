@@ -8,6 +8,7 @@ let price = document.getElementById('price');
 let thumbnail = document.getElementById('thumbnail');
 let btn_guardar = document.getElementById('btn_guardar');
 
+// Cuando un usuario se conecta
 Swal.fire({
   title: 'Login',
   text: 'Ingrese su email',
@@ -24,13 +25,15 @@ Swal.fire({
   socket.emit('registered', user)
 });
 
+// Boton GUARDAR
 btn_guardar.addEventListener('click', (e) => {
   e.preventDefault();
 
   let obj = {
     title:title.value, 
     price:parseInt(price.value), 
-    thumbnail:thumbnail.value
+    thumbnail:thumbnail.value,
+    uploaded: user
   }  
 
   if(obj.title !== '' && obj.price !== 0 && price.value !== '' && obj.thumbnail !== ''){    
@@ -39,7 +42,7 @@ btn_guardar.addEventListener('click', (e) => {
     price.value='';
     thumbnail.value='';
   } else {
-    mensaje();
+    mensaje();  // Mensaje de Error
   }
   
 });
@@ -65,18 +68,22 @@ socket.on('prodHistory', data => {
   let cell1 = row.insertCell(0);
   let cell2 = row.insertCell(1);
   let cell3 = row.insertCell(2);
+  let cell4 = row.insertCell(3); 
   cell1.innerHTML = "Titulo";
   cell2.innerHTML = "Precio";
-  cell3.innerHTML = "Foto";
+  cell3.innerHTML = "Uploaded";
+  cell4.innerHTML = "Foto";
 
   data.forEach((prod,index)=> {
     row = table.insertRow(index+1);
     cell1 = row.insertCell(0);
     cell2 = row.insertCell(1);
     cell3 = row.insertCell(2);
+    cell4 = row.insertCell(3);
     cell1.innerHTML = prod.title;
-    cell2.innerHTML = prod.price;
-    cell3.innerHTML = `<img style="object-fit: cover;width:200px;" src="${prod.thumbnail}" alt="${prod.title}">`;
+    cell2.innerHTML = `$${prod.price}`;
+    cell3.innerHTML = prod.uploaded;
+    cell4.innerHTML = `<img style="object-fit: cover;width:200px;" src="${prod.thumbnail}" alt="${prod.title}">`;
   });
 
   console.log(data); 
