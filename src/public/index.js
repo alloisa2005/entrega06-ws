@@ -74,6 +74,9 @@ socket.on('newUser', (data) => {
 
 socket.on('prodHistory', data => {
 
+  let productosTabla_h2 = document.getElementById('productosTabla_h2');
+  productosTabla_h2.innerHTML = `Productos Cargaos (${data.length})`;
+
   let table = document.getElementById('productosTabla');
   table.innerHTML = '';
   let row = table.insertRow(0);
