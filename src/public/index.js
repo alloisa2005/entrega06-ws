@@ -22,6 +22,9 @@ Swal.fire({
     if (!value) {
       return 'Necesitas un correo para ingresar'
     }
+    if(!validarCorreo(value)) {
+      return 'Ingrese un formato de correo válido'
+    }
   }
 }).then(res => {
   user = res.value;
@@ -142,4 +145,10 @@ function formatoFecha(fch){
   if(seconds < 10) seconds='0'+seconds;
 
   return `${dia}/${mes}/${anio} ${hora}:${minutes}:${seconds}`;
+}
+
+function validarCorreo(correo) {
+  emailRegex = /^[-\w.%+]{1,64}@(?:[A-Z0-9-]{1,63}\.){1,125}[A-Z]{2,63}$/i;
+  
+   return emailRegex.test(correo) ? true : false;
 }

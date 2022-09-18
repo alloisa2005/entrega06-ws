@@ -37,7 +37,8 @@ app.use('/api/productos', productRouter)
 io.on('connection', socket => {  
 
   // cuando se conecta un nuevo usuario
-  socket.on('registered', data => {
+  socket.on('registered', data => {    
+    
     socket.broadcast.emit('newUser', data)    
     
     //console.log(mensajes);
