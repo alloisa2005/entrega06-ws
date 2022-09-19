@@ -100,7 +100,7 @@ socket.on('prodHistory', data => {
     cell1.innerHTML = prod.title;
     cell2.innerHTML = `$${prod.price}`;
     cell3.innerHTML = prod.uploaded;
-    cell4.innerHTML = `<img style="object-fit: cover;width:200px;" src="${prod.thumbnail}" alt="${prod.title}">`;
+    cell4.innerHTML = `<img style="object-fit:contain;" src="${prod.thumbnail}" alt="${prod.title}">`;
   });  
 });
 
