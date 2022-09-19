@@ -115,3 +115,14 @@ img {
   color: blue;
   font-weight: bold;
 }
+
+.title_user {
+  width: 100%;
+  text-align: end;  
+  padding: 10px 0;
+  font-size: 1.1rem;
+}
+
+.title_user span {
+  font-weight: bold;
+}

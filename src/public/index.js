@@ -11,6 +11,9 @@ let btn_guardar = document.getElementById('btn_guardar');
 let input_msj = document.getElementById('input_msj');
 let chat_container = document.getElementById('chat_container');
 
+// Para mostrar en pantalla el email del usuario
+let title_user = document.getElementById('title_user');
+
 // Cuando un usuario se conecta
 Swal.fire({
   title: 'Login',
@@ -72,10 +75,15 @@ socket.on('newUser', (data) => {
   })
 })
 
+// Cuando se registra un usuario pinto en pantalla el email
+socket.on('userTitle', data => {
+  title_user.innerHTML = data;
+});
+
 socket.on('prodHistory', data => {
 
   let productosTabla_h2 = document.getElementById('productosTabla_h2');
-  productosTabla_h2.innerHTML = `Productos Cargaos (${data.length})`;
+  productosTabla_h2.innerHTML = `Productos Cargados (${data.length})`;
 
   let table = document.getElementById('productosTabla');
   table.innerHTML = '';

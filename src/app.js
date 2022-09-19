@@ -21,6 +21,8 @@ app.use(express.static(__dirname + '/public'));
 app.use(express.json());
 app.use(express.urlencoded({extended:true}));
 
+let user;
+
 let products = [];
 contenedor.getAll().then(res => {products = res.data;}); 
 
@@ -28,7 +30,7 @@ let mensajes = [];
 cont_mensajes.getAll().then(res => {mensajes = res.data;});
 
 app.get('/', (req, res) => {  
-  res.render('home', {products});
+  res.render('home', {products, user});
 });
 
 app.use('/api/productos', productRouter)
@@ -38,10 +40,13 @@ io.on('connection', socket => {
 
   // cuando se conecta un nuevo usuario
   socket.on('registered', data => {    
-    
+
+    user = data;
+
     socket.broadcast.emit('newUser', data)    
     
-    //console.log(mensajes);
+    socket.emit('userTitle', user);
+    
     io.emit('prodHistory', products)
     socket.emit('chatHistory', mensajes)
   })
